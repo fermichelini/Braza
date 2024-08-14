@@ -240,19 +240,19 @@ if uploaded_file is not None:
     def highlight_rows(row):
         styles = [''] * len(row)  # Initialize a list with empty styles
 
-            if row['Quantity'] > 5:
+        if row['Quantity'] > 5:
                 styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 0, 0, 0.5); color: black;'
-            elif row['Quantity'] > 4:
+        elif row['Quantity'] > 4:
                 styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 165, 0, 0.5); color: black;'  # orange
-            elif row['Quantity'] > 3:
+        elif row['Quantity'] > 3:
                 styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 192, 203, 0.5); color: black;'  # pink
-            elif row['Quantity'] > 2:
+        elif row['Quantity'] > 2:
                 styles[row.index.get_loc('Quantity')] = 'background-color: rgba(144, 238, 144, 0.5); color: black;'  # lightgreen
-            elif row['Quantity'] > 1:
+        elif row['Quantity'] > 1:
                 styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 255, 0, 0.5); color: black;'  # yellow
 
 
-            return styles
+        return styles
 
     # Apply the style
     df_sorted = df_sorted.reset_index(drop=True)
