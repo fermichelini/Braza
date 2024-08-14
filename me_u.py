@@ -238,6 +238,8 @@ if uploaded_file is not None:
     df_sum = df_sorted['Total Price'].sum()
 
     def highlight_rows(row):
+        styles = [''] * len(row)  # Initialize a list with empty styles
+
             if row['Quantity'] > 5:
                 styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 0, 0, 0.5); color: black;'
             elif row['Quantity'] > 4:
@@ -310,6 +312,8 @@ if uploaded_file is not None:
         df_final_sum = df_final['Total Price'].sum()
 
         def highlight_rows(row):
+            styles = [''] * len(row)  # Initialize a list with empty styles
+
             if row['Quantity'] > 5:
                 styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 0, 0, 0.5); color: black;'
             elif row['Quantity'] > 4:
@@ -475,6 +479,8 @@ if uploaded_file is not None:
         df_final_sum = df_final['Total Price'].sum()
 
         def highlight_rows(row):
+            styles = [''] * len(row)  # Initialize a list with empty styles
+
             if row['Quantity'] > 5:
                 styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 0, 0, 0.5); color: black;'
             elif row['Quantity'] > 4:
