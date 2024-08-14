@@ -1,18 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib as mpl
-import os
-from datetime import datetime
-
-import plotly.graph_objects as go
-import plotly.subplots as sp
-import plotly.express as px
-
-from matplotlib import pyplot as plt
-from matplotlib.collections import LineCollection
-from matplotlib import cm
-
 from PIL import Image
 
 
