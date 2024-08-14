@@ -238,18 +238,19 @@ if uploaded_file is not None:
     df_sum = df_sorted['Total Price'].sum()
 
     def highlight_rows(row):
-        if row['Quantity'] > 5:
-            return ['background-color: red; color: black;' for _ in row]
-        elif row['Quantity'] > 4:
-            return ['background-color: orange; color: black;' for _ in row]
-        elif row['Quantity'] > 3:
-            return ['background-color: pink; color: black;' for _ in row]
-        elif row['Quantity'] > 2:
-            return ['background-color: lightgreen; color: black;' for _ in row]
-        elif row['Quantity'] > 1:
-            return ['background-color: yellow; color: black;' for _ in row]
-        else:
-            return ['' for _ in row]
+            if row['Quantity'] > 5:
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 0, 0, 0.5); color: black;'
+            elif row['Quantity'] > 4:
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 165, 0, 0.5); color: black;'  # orange
+            elif row['Quantity'] > 3:
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 192, 203, 0.5); color: black;'  # pink
+            elif row['Quantity'] > 2:
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(144, 238, 144, 0.5); color: black;'  # lightgreen
+            elif row['Quantity'] > 1:
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 255, 0, 0.5); color: black;'  # yellow
+
+
+            return styles
 
     # Apply the style
     df_sorted = df_sorted.reset_index(drop=True)
@@ -310,17 +311,18 @@ if uploaded_file is not None:
 
         def highlight_rows(row):
             if row['Quantity'] > 5:
-                return ['background-color: red; color: black;' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 0, 0, 0.5); color: black;'
             elif row['Quantity'] > 4:
-                return ['background-color: orange; color: black;' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 165, 0, 0.5); color: black;'  # orange
             elif row['Quantity'] > 3:
-                return ['background-color: pink; color: black;' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 192, 203, 0.5); color: black;'  # pink
             elif row['Quantity'] > 2:
-                return ['background-color: lightgreen; color: black;' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(144, 238, 144, 0.5); color: black;'  # lightgreen
             elif row['Quantity'] > 1:
-                return ['background-color: yellow; color: black;' for _ in row]
-            else:
-                return ['' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 255, 0, 0.5); color: black;'  # yellow
+
+
+            return styles
 
         # Apply the style
         df_final = df_final.reset_index(drop=True)
@@ -474,17 +476,18 @@ if uploaded_file is not None:
 
         def highlight_rows(row):
             if row['Quantity'] > 5:
-                return ['background-color: red; color: black;' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 0, 0, 0.5); color: black;'
             elif row['Quantity'] > 4:
-                return ['background-color: orange; color: black;' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 165, 0, 0.5); color: black;'  # orange
             elif row['Quantity'] > 3:
-                return ['background-color: pink; color: black;' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 192, 203, 0.5); color: black;'  # pink
             elif row['Quantity'] > 2:
-                return ['background-color: lightgreen; color: black;' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(144, 238, 144, 0.5); color: black;'  # lightgreen
             elif row['Quantity'] > 1:
-                return ['background-color: yellow; color: black;' for _ in row]
-            else:
-                return ['' for _ in row]
+                styles[row.index.get_loc('Quantity')] = 'background-color: rgba(255, 255, 0, 0.5); color: black;'  # yellow
+
+
+            return styles
 
         # Apply the style
         df_final = df_final.reset_index(drop=True)
