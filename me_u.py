@@ -25,7 +25,7 @@ st.markdown(
 )
 
 # Load and display image
-image = Image.open(logob.png')
+image = Image.open('logob.png')
 resized_image = image.resize((520, 180))  # Resize to 250x250 pixels
 st.image(resized_image)
 
