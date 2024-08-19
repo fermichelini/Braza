@@ -342,7 +342,13 @@ if uploaded_file is not None:
         st.write(f"Total sales: $ {df_af_sum:.2f}")
         st.write(f"Total sales - refund: $ {df_final_sum:.2f}")
 
-        if df_final_sum == df_af_sum:
+        tolerance = 0.1
+        if abs(df_final_sum - df_af_sum) < tolerance:
+            tol = 1
+        else:
+            tol = 0
+
+        if tol == 1:
             st.markdown(
                 '<p style="color:green;">Validation: CORRECT - OK</p>', unsafe_allow_html=True)
         else:
@@ -509,12 +515,18 @@ if uploaded_file is not None:
         st.write(f"Total sales: $ {df_af_sum:.2f}")
         st.write(f"Total sales - refund: $ {df_final_sum:.2f}")
 
-        if df_final_sum == df_af_sum:
+        tolerance = 0.1
+        if abs(df_final_sum - df_af_sum) < tolerance:
+            tol = 1
+        else:
+            tol = 0
+        if tol == 1:
             st.markdown(
                 '<p style="color:green;">Validation: CORRECT - OK</p>', unsafe_allow_html=True)
         else:
             st.markdown(
                 '<p style="color:red;">Validation: INCORRECT - NOK</p>', unsafe_allow_html=True)
+            
     else:
         df_st['Total Price'] = df_st['Total Price'].apply(
             lambda x: f"${x:,.2f}")
@@ -525,7 +537,12 @@ if uploaded_file is not None:
         st.write(f"Total sales: $ {df_af_sum:.2f}")
         st.write(f"Total sales - validation: $ {df_st_sum:.2f}")
         st.write("No refund today :)")
-        if df_af_sum == df_st_sum:
+        tolerance = 0.1
+        if abs(df_af_sum - df_st_sum) < tolerance:
+            tol = 1
+        else:
+            tol = 0
+        if tol == 1:
             st.markdown(
                 '<p style="color:green;">Validation: CORRECT - OK</p>', unsafe_allow_html=True)
         else:
