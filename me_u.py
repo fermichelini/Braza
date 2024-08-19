@@ -50,6 +50,9 @@ if uploaded_file is not None:
     df_1 = pd.read_csv(uploaded_file)
     df = df_1.loc[:, ['orderId', 'localCreatedAt', 'productName', 'menuCategoryName',
                       'menuSectionName', 'type', 'category', 'quantity', 'totalPrice', 'kind', 'status']]
+    df['menuSectionName'] = df['menuSectionName'].apply(
+        lambda x: 'Beer on Tap' if isinstance(
+            x, str) and 'Beer on Tap' in x else x)
 
     # Convert the 'localCreatedAt' column to datetime
     df['localCreatedAt'] = pd.to_datetime(df['localCreatedAt'])
@@ -92,7 +95,9 @@ if uploaded_file is not None:
                 return 2
             elif row['menuSectionName'] == 'Martinis':
                 return 5
-            elif row['menuCategoryName'] == 'Cocktails' or row['menuSectionName'] == 'Caipirinha Family':
+            elif row['productName'] == 'Caipiberries':
+                return 0
+            elif row['menuSectionName'] == 'Caipirinha Family':
                 return 3
             elif row['menuSectionName'] == 'Batidas':
                 return 4
@@ -119,7 +124,7 @@ if uploaded_file is not None:
 
     # Step 1: Initial filtering based on mod_flag and kind
     df_filter_mod = df[(df['mod_flag'] != 0) & (df['kind'] == 'affirmation')]
-    st.write(df_filter_mod.dtypes)  # Check the data types (for debugging)
+
 
     # Step 2: Further filtering for 'modifier' type and quantity >= 2
     df_filter_mod_1 = df_filter_mod[(df_filter_mod['type'] == 'modifier') & (
@@ -128,7 +133,7 @@ if uploaded_file is not None:
     # Step 3: Duplicate the rows based on quantity
     df_duplicated = df_filter_mod_1.loc[df_filter_mod_1.index.repeat(
         df_filter_mod_1['quantity'])]
-    st.write(df_duplicated)
+  
 
     # Step 4: Concatenate the duplicated rows with the original DataFrame
     # Here we concatenate back to the already filtered df (excluding original modifier rows)
@@ -277,13 +282,20 @@ if uploaded_file is not None:
         return styles
 
     # Apply the style
-    df_sorted['unitprice'] = (df_sorted['Total Price']/df_sorted['Quantity'])
-    df_sorted['Section'] = df_sorted['Section'].replace(
-        'Beer on Tap - Ginger Beer', 'Beer on Tap - Australian')
+    df_sorted['is_pint'] = df_sorted['Product Name'].apply(
+        lambda x: 1 if any(keyword in x.lower()
+                           for keyword in ['pint', '500ml']) else 0
+    )
+    df_sorted['Section'] = df_sorted.apply(
+        lambda row: 'Beer on Tap - Pint' if row['is_pint'] == 1 and row['Section'] == 'Beer on Tap'
+        else ('Beer on Tap - Schooner' if row['Section'] == 'Beer on Tap' else row['Section']),
+        axis=1
+    )
     df_sorted = df_sorted.reset_index(drop=True)
     df_sorted = df_sorted.sort_values(
-        by=['Category', 'Section', 'unitprice', 'Product Name'], ascending=[True, True, True, True])
-    df_sorted = df_sorted.drop(columns=['unitprice'])
+        by=['Category', 'Section', 'is_pint', 'Product Name'], ascending=[True, True, True, False])
+    df_sorted = df_sorted.drop(columns=['is_pint'])
+    # df_sorted = df_sorted.drop(columns=['is_pint'])
     df_st_sum = df_sorted['Total Price'].sum()
     df_st = df_sorted
 
@@ -355,9 +367,20 @@ if uploaded_file is not None:
             return styles
 
         # Apply the style
+
+        df_final['is_pint'] = df_final['Product Name'].apply(
+            lambda x: 1 if any(keyword in x.lower()
+                               for keyword in ['pint', '500ml']) else 0
+        )
+        df_final['Section'] = df_final.apply(
+            lambda row: 'Beer on Tap - Pint' if row['is_pint'] == 1 and row['Section'] == 'Beer on Tap'
+            else ('Beer on Tap - Schooner' if row['Section'] == 'Beer on Tap' else row['Section']),
+            axis=1
+        )
         df_final = df_final.reset_index(drop=True)
         df_final = df_final.sort_values(
-            by=['Category', 'Section', 'Product Name'], ascending=[True, True, True])
+            by=['Category', 'Section', 'is_pint', 'Product Name'], ascending=[True, True, False, True])
+        df_final = df_final.drop(columns=['is_pint'])
         df_final['Total Price'] = df_final['Total Price'].apply(
             lambda x: f"${x:,.2f}")
         df_final['Quantity'] = df_final['Quantity'].astype(int)
@@ -528,9 +551,19 @@ if uploaded_file is not None:
             return styles
 
         # Apply the style
+        df_final['is_pint'] = df_final['Product Name'].apply(
+            lambda x: 1 if any(keyword in x.lower()
+                               for keyword in ['pint', '500ml']) else 0
+        )
+        df_final['Section'] = df_final.apply(
+            lambda row: 'Beer on Tap - Pint' if row['is_pint'] == 1 and row['Section'] == 'Beer on Tap'
+            else ('Beer on Tap - Schooner' if row['Section'] == 'Beer on Tap' else row['Section']),
+            axis=1
+        )
         df_final = df_final.reset_index(drop=True)
         df_final = df_final.sort_values(
-            by=['Category', 'Section', 'Product Name'], ascending=[True, True, True])
+            by=['Category', 'Section', 'is_pint', 'Product Name'], ascending=[True, True, True, False])
+        df_final = df_final.drop(columns=['is_pint'])
         df_final['Total Price'] = df_final['Total Price'].apply(
             lambda x: f"${x:,.2f}")
         df_final['Quantity'] = df_final['Quantity'].astype(int)
