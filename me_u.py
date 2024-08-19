@@ -255,9 +255,13 @@ if uploaded_file is not None:
         return styles
 
     # Apply the style
+    df_sorted['unitprice'] = (df_sorted['Total Price']/df_sorted['Quantity'])
+    df_sorted['Section'] = df_sorted['Section'].replace(
+        'Beer on Tap - Ginger Beer', 'Beer on Tap - Australian')
     df_sorted = df_sorted.reset_index(drop=True)
     df_sorted = df_sorted.sort_values(
-        by=['Category', 'Section', 'Product Name'], ascending=[True, True, True])
+        by=['Category', 'Section', 'unitprice', 'Product Name'], ascending=[True, True, True, True])
+    df_sorted = df_sorted.drop(columns=['unitprice'])
     df_st_sum = df_sorted['Total Price'].sum()
     df_st = df_sorted
 
