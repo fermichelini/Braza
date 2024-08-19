@@ -112,12 +112,31 @@ if uploaded_file is not None:
     # AFFIRMATION STATEMENT
     # Apply the function to each row
     df['mod_flag'] = df.apply(set_mod_flag, axis=1)
+    df['quantity'] = df['quantity'].astype(int)
+
 
     df_no_modifier = df[(df['mod_flag'] == 0) & (df['kind'] == 'affirmation')]
 
-    # Creating a database with items that need modifier and modifiers
+    # Step 1: Initial filtering based on mod_flag and kind
     df_filter_mod = df[(df['mod_flag'] != 0) & (df['kind'] == 'affirmation')]
+    st.write(df_filter_mod.dtypes)  # Check the data types (for debugging)
 
+    # Step 2: Further filtering for 'modifier' type and quantity >= 2
+    df_filter_mod_1 = df_filter_mod[(df_filter_mod['type'] == 'modifier') & (
+        df_filter_mod['quantity'] > 1)]
+
+    # Step 3: Duplicate the rows based on quantity
+    df_duplicated = df_filter_mod_1.loc[df_filter_mod_1.index.repeat(
+        df_filter_mod_1['quantity'])]
+    st.write(df_duplicated)
+
+    # Step 4: Concatenate the duplicated rows with the original DataFrame
+    # Here we concatenate back to the already filtered df (excluding original modifier rows)
+    df_filter_mod = pd.concat(
+        [df_filter_mod.drop(df_filter_mod_1.index), df_duplicated], ignore_index=True)
+
+    # Step 5: Reset the index (optional)
+    df_filter_mod.reset_index(drop=True, inplace=True)
     # Flagging the the respective modifiers ad their prices
     mod_flag_map = {
         1: mod_hot_choc,
@@ -184,6 +203,9 @@ if uploaded_file is not None:
     df_filter_mod[['modifier_1', 'modifier_2', 'modifier_1_price', 'modifier_2_price']] = df_filter_mod.apply(
         lambda row: pd.Series(find_modifiers(row, df_filter_mod, used_modifiers_by_order[row['orderId']])), axis=1
     )
+    df_filter_mod['modifier_1'] = df_filter_mod.apply(
+        lambda row: 'Lime' if row['modifier_1'] == '' and row['menuSectionName'] == 'Caipirinha Family' else row['modifier_1'],
+        axis=1)
 
     # Create the 'new_name' column
     df_filter_mod['new_name'] = df_filter_mod.apply(
