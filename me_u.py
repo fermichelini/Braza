@@ -387,9 +387,10 @@ if uploaded_file is not None:
         df_final = df_final.style.apply(highlight_rows, axis=1)
 
         st.dataframe(df_final, use_container_width=True, height=850)
-        st.write(f"Total refunded: $ {df_sum_reversal:.2f}")
-        st.write(f"Total sales: $ {df_af_sum:.2f}")
-        st.write(f"Total sales - refund: $ {df_final_sum:.2f}")
+        st.write(f'<span style="color:white">Total refunded: $ {df_sum_reversal:.2f}</span>', unsafe_allow_html=True)
+        st.write(f'<span style="color:white">Total sales: $ {df_af_sum:.2f}</span>', unsafe_allow_html=True)
+        st.write(f'<span style="color:white">Total sales - refund: $ {df_final_sum:.2f}</span>', unsafe_allow_html=True)
+
 
         tolerance = 0.1
         if abs(df_final_sum - df_af_sum) < tolerance:
@@ -570,9 +571,10 @@ if uploaded_file is not None:
         df_final = df_final.style.apply(highlight_rows, axis=1)
 
         st.dataframe(df_final, use_container_width=True, height=850)
-        st.write(f"Total refunded: $ {df_sum_reversal:.2f}")
-        st.write(f"Total sales: $ {df_af_sum:.2f}")
-        st.write(f"Total sales - refund: $ {df_final_sum:.2f}")
+        st.write(f'<span style="color:white">Total refunded: $ {df_sum_reversal:.2f}</span>', unsafe_allow_html=True)
+        st.write(f'<span style="color:white">Total sales: $ {df_af_sum:.2f}</span>', unsafe_allow_html=True)
+        st.write(f'<span style="color:white">Total sales - refund: $ {df_final_sum:.2f}</span>', unsafe_allow_html=True)
+
 
         tolerance = 0.1
         if abs(df_final_sum - df_af_sum) < tolerance:
@@ -593,8 +595,8 @@ if uploaded_file is not None:
         df_st = df_st.style.apply(highlight_rows, axis=1)
         st.dataframe(df_st, use_container_width=True, height=850)
         df_af_sum = df['totalPrice'].sum()
-        st.write(f"Total sales: $ {df_af_sum:.2f}")
-        st.write(f"Total sales - validation: $ {df_st_sum:.2f}")
+        st.write(f'<span style="color:white">Total sales: $ {df_af_sum:.2f}</span>', unsafe_allow_html=True)
+        st.write(f'<span style="color:white">Total sales - validation: $ {df_st_sum:.2f}</span>', unsafe_allow_html=True)
         st.write("No refund today :)")
         tolerance = 0.1
         if abs(df_af_sum - df_st_sum) < tolerance:
