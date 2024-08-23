@@ -60,7 +60,7 @@ if uploaded_file is not None:
     # Extract just the date
     df['date'] = df['localCreatedAt'].dt.date
     df['date'] = pd.to_datetime(df['date']).dt.strftime('%d-%m-%Y')
-    st.write(f"File Date: {df['date'].iloc[0]}")
+    st.write(f'<span style="color:white">File Date: {df['date'].iloc[0]}</span>', unsafe_allow_html=True)
     df['quantity'] = df['quantity'].astype(float)
 
     import pandas as pd
